@@ -78,5 +78,4 @@ class CoinData {
     print('Map: $map');
     return map;
   }
-
 }
