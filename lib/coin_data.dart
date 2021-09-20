@@ -56,24 +56,26 @@ const apiKey = '72A339CA-0FEF-4835-B6E1-70A9E3B00D59';
 
 class CoinData {
   Future getCoinData(String selectedCurrency) async {
-    Map<String, Future<String>> map = {};
+    Map<String, String> map = {};
     for (var crypto in cryptoList) {
-      String requestURL = '$coinAPIURL/$crypto$selectedCurrency';
+      String requestURL =
+          '$coinAPIURL/$crypto/$selectedCurrency?apiKey=$apiKey';
+      // String requestURL = '$coinAPIURL/BTC/USD?apikey=$apiKey';
       http.Response response = await http.get(Uri.parse(requestURL));
 
       if (response.statusCode == 200) {
         var decodedData = jsonDecode(response.body);
         var lastPrice = decodedData['rate'];
-        map[crypto] = lastPrice;
+
+        map[crypto] = lastPrice.toStringAsFixed(0);
       } else {
         print(response.statusCode);
         throw 'Problem with the get request';
       }
-      print('Map: $map');
-
-      return map;
     }
     //TODO 4: Use a for loop here to loop through the cryptoList and request the data for each of them in turn.
     //TODO 5: Return a Map of the results instead of a single value.
+    print('Map: $map');
+    return map;
   }
 }

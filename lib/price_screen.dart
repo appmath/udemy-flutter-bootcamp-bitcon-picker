@@ -53,7 +53,9 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 
-  String value = '?';
+  String btcValue = '?';
+  String ethValue = '?';
+  String ltcValue = '?';
 
   //TODO 7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint: You'll need a ternary operator.
 
@@ -62,14 +64,22 @@ class _PriceScreenState extends State<PriceScreen> {
     try {
       // var data = await coinData.getCoinData();
       // double tempRate = data['src_side_base'][0]['rate'];
+      // src_side_base[1].rate
       // bitCoinUsdRate = tempRate.toInt();
 
-      Map map = await CoinData().getCoinData(selectedCurrency);
-      var btcData = map["BTC"];
-      String data = 200.00;
+      // Map map = await CoinData().getCoinData(selectedCurrency);
+      // var btcData = map["BTC"];
+      // String data = 200.00;
+      var map = await CoinData().getCoinData(selectedCurrency);
+      print('Returned Map: $map');
+      print('BTC: ${map["BTC"]}');
+      print('ETH: ${map["ETH"]}');
+      print('LTC: ${map["LTC"]}');
 
       setState(() {
-        value = data;
+        btcValue = map["BTC"];
+        ethValue = map["ETH"];
+        ltcValue = map["LTC"];
       });
     } catch (e) {
       print(e);
@@ -97,18 +107,23 @@ class _PriceScreenState extends State<PriceScreen> {
           //TODO 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them, one for each cryptocurrency.
           //TODO 2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this CryptoCard Widget.
           //TODO 3: You'll need to use a Column Widget to contain the three CryptoCards.
-          CryptoCard(
-              value: value,
-              selectedCurrency: selectedCurrency,
-              cryptoName: 'BTC'),
-          CryptoCard(
-              value: value,
-              selectedCurrency: selectedCurrency,
-              cryptoName: 'BTC'),
-          CryptoCard(
-              value: value,
-              selectedCurrency: selectedCurrency,
-              cryptoName: 'BTC'),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CryptoCard(
+                  value: btcValue,
+                  selectedCurrency: selectedCurrency,
+                  cryptoName: 'BTC'),
+              CryptoCard(
+                  value: ethValue,
+                  selectedCurrency: selectedCurrency,
+                  cryptoName: 'ETH'),
+              CryptoCard(
+                  value: ltcValue,
+                  selectedCurrency: selectedCurrency,
+                  cryptoName: 'LTC'),
+            ],
+          ),
           Container(
             height: 150.0,
             alignment: Alignment.center,
