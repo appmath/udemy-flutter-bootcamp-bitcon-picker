@@ -60,9 +60,16 @@ class _PriceScreenState extends State<PriceScreen> {
   //TODO 6: Update this method to receive a Map containing the crypto:price key value pairs. Then use that map to update the CryptoCards.
   void getData() async {
     try {
-      double data = await CoinData().getCoinData(selectedCurrency);
+      // var data = await coinData.getCoinData();
+      // double tempRate = data['src_side_base'][0]['rate'];
+      // bitCoinUsdRate = tempRate.toInt();
+
+      Map map = await CoinData().getCoinData(selectedCurrency);
+      var btcData = map["BTC"];
+      String data = 200.00;
+
       setState(() {
-        value = data.toStringAsFixed(0);
+        value = data;
       });
     } catch (e) {
       print(e);
